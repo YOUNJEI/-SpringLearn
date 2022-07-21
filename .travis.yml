@@ -13,7 +13,7 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-script: "cd spring-learn && ./gradlew clean build"
+script: "cd spring-learn && ./gradlew clean build && cd .."
 
 before_deploy:
   - cd spring-learn
