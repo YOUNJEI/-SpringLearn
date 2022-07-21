@@ -15,6 +15,25 @@ cache:
 
 script: "cd spring-learn && ./gradlew clean build"
 
+before_deploy:
+  - cd spring-learn
+  - zip -r springlearn-springboot-webservice *
+  - mv springlearn-springboot-webservice.zip ../
+  - cd ..
+  - mkdir -p deploy
+  - mv springlearn-springboot-webservice.zip deploy/
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: springlearn-springboot-build # S3 버킷 이름
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private  # zip 파일을 private으로
+    local_dir: deploy
+    wait-until-deployed: true
+
 # CI 실행 완료 시 메일로 알람
 notifications:
   email:
